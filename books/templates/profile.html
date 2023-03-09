@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }} Please, try again.
+        </div>
+      {% endif %}
+  {% endwith %}
+
+<h1 class="title">
+  {% if current_user.is_authenticated %}
+    Welcome, {{email}}!
+
+    <br>
+
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+
+    <br>
+    {% if data %}
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Date Published</th>
+            <th>UUID</th>
+            <th>Publisher</th>
+            <th>S3 File</th>
+            <th>S3 URL</th>
+          </tr>
+        </thead>
+        {% for book in data %}
+          <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.date_published }}</td>
+            <td>{{ book.uuid }}</td>
+            <td>{{ book.publisher_name }}</td>
+            <td>{{ book.s3_name }}</td>
+            <td><a href="{{ book.s3_url }}">{{ book.s3_url }}</a></td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% endif %}
+
+  {% else %}
+    Welcome, stranger!
+  {% endif %}
+</h1>
+{% endblock %}
